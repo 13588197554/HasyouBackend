@@ -165,8 +165,9 @@ public class Util {
     }
 
     public static void main(String[] args) throws ParseException {
-        String s = getCurrentFormatTime();
-        new SimpleDateFormat();
+        String time = "2018-10-10 10:10:10";
+        Long aLong = getTimestamp(time);
+        System.out.println(aLong);
     }
 
 }

@@ -13,7 +13,6 @@ import com.fly.util.LogUtil;
 import com.fly.util.RedisUtil;
 import com.fly.util.TimeUtil;
 import com.fly.util.Util;
-import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -51,11 +50,6 @@ public class V2TagSpider extends BaseSpider {
     private static String HN_URL = "http://www.xicidaili.com/nn";
 
     private static String HTTPS_URL = "http://www.xicidaili.com/wn";
-
-    // HTTPS代理
-    private static String HTTPS_PROXY = "HTTPS_PROXY";
-    // 高匿
-    private static String HIGH_ANON = "HIGH_ANON";
 
     private static String V2_MEMBER = "V2_MEMBER";
 
@@ -98,8 +92,8 @@ public class V2TagSpider extends BaseSpider {
                 post.setNodeId(node.getId());
                 post.setMemberId(member.getId());
                 post.setType(type);
-                String createTime = TimeUtil.getTime(Long.valueOf(post.getCreated() * 1000));
-                post.setCreateTime(createTime);
+                post.setCreateTime(TimeUtil.getTime(Long.valueOf(post.getCreated() * 1000)));
+                post.setUpdateTime(TimeUtil.getTime(Long.valueOf(post.getLastModified() * 1000)));
                 pd.save(post);
                 nd.save(node);
                 md.save(member);
@@ -117,20 +111,6 @@ public class V2TagSpider extends BaseSpider {
             e.printStackTrace();
             return;
         }
-    }
-
-    private Document getDoc(String url) throws IOException {
-        System.setProperty("https.proxySet", "true");
-        System.getProperties().put("https.proxyHost", "49.79.156.140");
-        System.getProperties().put("https.proxyPort", 8000);
-
-        Connection connect = Jsoup.connect(url);
-        connect.userAgent("CatchBot/1.0;  http://www.catchbot.com");
-        connect = Jsoup.connect(url).timeout(5000);
-        connect.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-        connect.header("Accept-Encoding", "gzip, deflate, sdch");
-        connect.header("Accept-Language", "zh-CN,zh;q=0.8");
-        return connect.get();
     }
 
 }

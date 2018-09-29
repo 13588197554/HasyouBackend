@@ -120,6 +120,9 @@ public class TagServiceImpl implements TagService {
         for (FlyTag tag : tags) {
             if (!"0".equals(tag.getPid())) {
                 Long subjectCount = countMap.get(tag.getId());
+                if (subjectCount == null) {
+                    subjectCount = 0L;
+                }
                 tag.setSubjectCount(subjectCount);
                 FlyTag parent = map.get(tag.getPid());
                 List<FlyTag> children = parent.getChildren();

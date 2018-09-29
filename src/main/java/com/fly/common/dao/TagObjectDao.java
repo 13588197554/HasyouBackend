@@ -20,8 +20,9 @@ public interface TagObjectDao extends JpaRepository<TagObject, Integer> {
                                        @Param("start") Integer start,
                                        @Param("count") Integer count);
 
+    // SELECT id FROM tag WHERE pid != '0' AND tag_type = 'DOUBAN_BOOK')
     @Query(nativeQuery = true, value = "SELECT tag_id, COUNT(1) FROM fly.tag_object GROUP BY tag_id " +
-            "HAVING tag_id IN (SELECT id FROM tag WHERE pid != '0' AND tag_type = 'DOUBAN_BOOK')")
+            "HAVING tag_id IN :tag_ids")
     List<Map<String, Object>> countByIds(@Param("tag_ids") List<String> tagIds);
 
     Long countByTagId(String tagId);
