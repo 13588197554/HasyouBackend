@@ -1,5 +1,7 @@
 package com.fly.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fly.enums.StatusEnum;
 import com.fly.util.Util;
 
@@ -7,6 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "douban_genre")
+@JsonIgnoreProperties({"createTime", "updateTime", "status"})
 public class DoubanGenre {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,6 +20,10 @@ public class DoubanGenre {
     private String createTime = Util.getCurrentFormatTime();
     @Column(name = "update_time")
     private String updateTime = Util.getCurrentFormatTime();
+
+    @Transient
+    @JsonProperty("subject_count")
+    private Long subjectCount;
 
     public Integer getId() {
         return id;
@@ -64,12 +71,21 @@ public class DoubanGenre {
         this.updateTime = updateTime;
     }
 
+    public Long getSubjectCount() {
+        return subjectCount;
+    }
+
+    public void setSubjectCount(Long subjectCount) {
+        this.subjectCount = subjectCount;
+    }
+
     @Override
     public String toString() {
         return "DoubanGenre{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", status='" + status + '\'' +
+                ", subjectCount='" + subjectCount + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", updateTime='" + updateTime + '\'' +
                 '}';

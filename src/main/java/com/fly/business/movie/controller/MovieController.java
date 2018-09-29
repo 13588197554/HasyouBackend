@@ -1,6 +1,7 @@
 package com.fly.business.movie.controller;
 
 import com.fly.business.movie.serevice.MovieService;
+import com.fly.pojo.DoubanGenre;
 import com.fly.pojo.DoubanMovie;
 import com.fly.pojo.FlyTag;
 import com.fly.pojo.vo.Page;
@@ -45,14 +46,21 @@ public class MovieController {
 
     }
 
-    @GetMapping("/subjects/{tag_id}")
+    @GetMapping("/subjects/{genre_id}")
     @ResponseBody
     public Result findByTagId(Result result,
-                              @PathVariable("tag_id") String tagId,
+                              @PathVariable("genre_id") String genre_id,
                               @RequestParam(value = "p", defaultValue = "1",required = false) Integer p,
-                              @RequestParam(value = "count", defaultValue = "20", required = false) Integer count) {
-        Page<DoubanMovie> page = ms.findByTagId(tagId, p, count);
+                              @RequestParam(value = "count", defaultValue = "24", required = false) Integer count) {
+        Page<DoubanMovie> page = ms.findByGenreId(genre_id, p, count);
         return result.ok(page);
+    }
+
+    @GetMapping("/genres")
+    @ResponseBody
+    public Result findGenres(Result result) {
+        List<DoubanGenre> genres = ms.findGenres();
+        return result.ok(genres);
     }
 
 }

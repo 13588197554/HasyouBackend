@@ -1,5 +1,6 @@
 package com.fly.business.movie.serevice;
 
+import com.fly.pojo.DoubanGenre;
 import com.fly.pojo.DoubanMovie;
 import com.fly.pojo.FlyTag;
 import com.fly.pojo.vo.Page;
@@ -14,5 +15,7 @@ public interface MovieService {
 
     List<FlyTag> findTags(String type);
 
-    Page<DoubanMovie> findByTagId(String tagId, Integer p, Integer count);
+    Page<DoubanMovie> findByGenreId(String genreId, Integer p, Integer count);
+
+    List<DoubanGenre> findGenres();
 }

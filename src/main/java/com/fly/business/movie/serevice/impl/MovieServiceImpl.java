@@ -29,6 +29,8 @@ public class MovieServiceImpl implements MovieService{
     private ParticipantDao pd;
     @Autowired
     private ImageDao imageDao;
+    @Autowired
+    private MovieGenreDao mgd;
 
     @Override
     public Long size() {
@@ -56,9 +58,9 @@ public class MovieServiceImpl implements MovieService{
     }
 
     @Override
-    public Page<DoubanMovie> findByTagId(String tagId, Integer p, Integer count) {
+    public Page<DoubanMovie> findByGenreId(String genreId, Integer p, Integer count) {
         Integer start = (p - 1) * count;
-        List<String> movieIds = tod.findIdsByTagIdAndPage(tagId, start, count);
+        List<String> movieIds = mgd.findIdsByGenreIdAndPage(genreId, start, count);
         if (movieIds.size() == 0) {
             return null;
         }
@@ -67,7 +69,7 @@ public class MovieServiceImpl implements MovieService{
         List<DoubanImage> movieImages = imageDao.findAllByMovieIds(movieIds);
 
         // handle image
-        Map<String, DoubanImage> imageMap = Util.getReferFromList("movieId", movieImages);
+        Map<String, DoubanImage> imageMap = Util.getReferFromList("fk", movieImages);
 
         // handle person
         List<DoubanMoviePerson> moviePersons = mpd.findAllByMovieIds(movieIds);
@@ -115,15 +117,36 @@ public class MovieServiceImpl implements MovieService{
             m.setDirectors(directors);
         }
 
-        // total
-        Long total = tod.countByTagId(tagId);
-
         Page<DoubanMovie> page = new Page<>();
-        page.setTotal(total);
         page.setPage(p);
         page.setCount(count);
         page.setBody(movies);
         return page;
+    }
+
+    @Override
+    public List<DoubanGenre> findGenres() {
+        List<DoubanGenre> genres = gd.findAll();
+        List<Integer> genreIds = new ArrayList<>();
+        genres.forEach(e -> { genreIds.add(e.getId()); });
+
+        List<Map<Integer, Object>> countArr = mgd.countByIds(genreIds);
+        Map<Integer, Long> countMap = new HashMap<>();
+        countArr.forEach((Map<Integer, Object> m) -> {
+            Integer id = (Integer) m.get("genre_id");
+            Object o = m.get("COUNT(1)");
+            Long value = Long.valueOf(o.toString());
+            countMap.put(id, value);
+        });
+
+        for (DoubanGenre genre : genres) {
+            Long aLong = countMap.get(genre.getId());
+            if (aLong == null) {
+                aLong = 0L;
+            }
+            genre.setSubjectCount(aLong);
+        }
+        return genres;
     }
 
 }

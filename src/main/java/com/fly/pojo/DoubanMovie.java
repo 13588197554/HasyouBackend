@@ -1,6 +1,7 @@
 package com.fly.pojo;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fly.enums.StatusEnum;
 import com.fly.util.Util;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "douban_movie")
+@JsonIgnoreProperties({"createTime", "updateTime", "status"})
 public class DoubanMovie {
 
     @Id
@@ -21,6 +23,7 @@ public class DoubanMovie {
     private String summary; // 电影简介
     @Column(name = "reviews_count")
     private Integer reviewsCount;
+    private Integer commentsCount;
     @Column(name = "wish_count")
     private Integer wishCount; // 想看人数
     @Column(name = "episodes_count")
@@ -156,6 +159,14 @@ public class DoubanMovie {
         this.image = image;
     }
 
+    public Integer getCommentsCount() {
+        return commentsCount;
+    }
+
+    public void setCommentsCount(Integer commentsCount) {
+        this.commentsCount = commentsCount;
+    }
+
     public List<DoubanGenre> getGenres() {
         return genres;
     }
@@ -263,6 +274,7 @@ public class DoubanMovie {
                 ", year=" + year +
                 ", alt='" + alt + '\'' +
                 ", status='" + status + '\'' +
+                ", commentsCount='" + commentsCount + '\'' +
                 ", createTime='" + createTime + '\'' +
                 ", updateTime='" + updateTime + '\'' +
                 ", image=" + image +

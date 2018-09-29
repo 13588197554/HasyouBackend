@@ -57,8 +57,8 @@ public class V2TagSpider extends BaseSpider {
      * 1 per hour
      * @throws IOException
      */
-    @Async
-    @Scheduled(fixedDelay = 3600 * 1000)
+//    @Async
+//    @Scheduled(fixedDelay = 3600 * 1000)
     public void hotStart() throws InterruptedException {
         savePosts(hotUrl, TypeEnum.HOT.getName());
     }
@@ -67,8 +67,8 @@ public class V2TagSpider extends BaseSpider {
      * per 1 hour and delay for 30 minutes for init
      * @throws IOException
      */
-    @Scheduled(fixedRate = 3600 * 1000, initialDelay = 1800 * 1000)
-    @Async
+//    @Scheduled(fixedRate = 3600 * 1000, initialDelay = 1800 * 1000)
+//    @Async
     public void latestStart() throws IOException {
         try {
             savePosts(latestUrl, TypeEnum.LATEST.getName());

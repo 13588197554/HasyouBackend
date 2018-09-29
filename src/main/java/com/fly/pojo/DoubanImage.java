@@ -1,5 +1,6 @@
 package com.fly.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fly.enums.StatusEnum;
 import com.fly.util.Util;
 
@@ -7,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "douban_image")
+@JsonIgnoreProperties({"createTime", "updateTime", "status"})
 public class DoubanImage {
 
     @Id
