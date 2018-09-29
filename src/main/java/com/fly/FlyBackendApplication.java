@@ -12,7 +12,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @EnableAsync
-//@EnableConfigurationProperties({TheadPoolConfig.class})
 public class FlyBackendApplication {
 
     public static void main(String[] args) {
