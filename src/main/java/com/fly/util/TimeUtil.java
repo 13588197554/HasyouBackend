@@ -87,9 +87,8 @@ public class TimeUtil {
     }
 
     public static void main(String[] args) {
-        Date date = new Date(getCurrDayStartTimestamp());
-        SimpleDateFormat format = new SimpleDateFormat(FULL_FORMAT);
-        String s = format.format(date);
+        Long t1 = 1538974846 * 1000L;
+        String s = getTime(t1);
         System.out.println(s);
     }
 

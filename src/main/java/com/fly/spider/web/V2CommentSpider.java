@@ -1,4 +1,4 @@
-package com.fly.spider;
+package com.fly.spider.web;
 
 import com.fly.business.v2.dao.CommentDao;
 import com.fly.business.v2.dao.MemberDao;
@@ -6,6 +6,7 @@ import com.fly.business.v2.dao.PostDao;
 import com.fly.enums.StatusEnum;
 import com.fly.pojo.V2Comment;
 import com.fly.pojo.V2Post;
+import com.fly.spider.BaseSpider;
 import com.fly.util.RedisUtil;
 import com.fly.util.Util;
 import org.jsoup.HttpStatusException;

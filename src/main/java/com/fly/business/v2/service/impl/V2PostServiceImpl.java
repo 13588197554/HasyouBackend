@@ -11,7 +11,7 @@ import com.fly.pojo.V2Member;
 import com.fly.pojo.V2Node;
 import com.fly.pojo.V2Post;
 import com.fly.pojo.vo.Page;
-import com.fly.spider.V2CommentSpider;
+import com.fly.spider.web.V2CommentSpider;
 import com.fly.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,7 +57,7 @@ public class V2PostServiceImpl implements V2PostService {
 
         Page<V2Post> page = new Page<>();
         // get total
-        Long total = pd.countByNodeId(node.getId());
+        Integer total = pd.countByNodeId(node.getId());
         page.setTotal(total);
         page.setBody(posts);
         page.setCount(count);
@@ -130,7 +130,7 @@ public class V2PostServiceImpl implements V2PostService {
             e.setCommentCount(commentCount);
         });
 
-        Long total = pd.countByKeywords("%" + keywords + "%");
+        Integer total = pd.countByKeywords("%" + keywords + "%");
         Page<V2Post> page = new Page<>();
         page.setTotal(total);
         page.setPage(p);
@@ -168,7 +168,7 @@ public class V2PostServiceImpl implements V2PostService {
             post.setCreateTime(Util.getTime(Long.valueOf(created) * 1000));
         }
 
-        Long total = pd.countByType(type);
+        Integer total = pd.countByType(type);
         Page<V2Post> page = new Page<>();
         page.setBody(posts);
         page.setPage(p);

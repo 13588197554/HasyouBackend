@@ -18,7 +18,7 @@ public interface BookDao extends JpaRepository<Book, String> {
     @Query(value = "SELECT * FROM douban_book ORDER BY stars DESC LIMIT :start, :count", nativeQuery = true)
     List<Book> findByPage(@Param("start") Integer start, @Param("count") Integer count);
 
-    @Query(value = "SELECT b.* FROM douban_book b WHERE b.tag_id = :tag_id ORDER BY stars DESC LIMIT :p, :count", nativeQuery = true)
+    @Query(value = "SELECT b.* FROM douban_book b WHERE b.tag_id = :tag_id ORDER BY stars, publish_time DESC LIMIT :p, :count", nativeQuery = true)
     List<Book> findByPageAndType(@Param("tag_id") String tagId, @Param(("p")) Integer p, @Param("count") Integer count);
 
     Long countByTagId(@Param("tag_id") String tagId);

@@ -43,8 +43,8 @@ public class MovieServiceImpl implements MovieService{
         Integer start = (p - 1) * count;
         List<DoubanMovie> movies = md.findByPage(type, start, count);
         Page<DoubanMovie> page = new Page<>();
-        long total = md.count();
-        page.setTotal(total);
+        Long total = md.count();
+        page.setTotal(Integer.valueOf(total.toString()));
         page.setPage(p);
         page.setCount(count);
         page.setBody(movies);
@@ -88,7 +88,7 @@ public class MovieServiceImpl implements MovieService{
             personIds.add(e.getPersonId());
         });
 
-        List<DoubanImage> personImages = imageDao.findAllByMovieIds(personIds);
+        List<DoubanImage> personImages = imageDao.findAllByMovieIds(movieIds);
         Map<String, DoubanImage> personImageMap = Util.getReferFromList("fk", personImages);
 
         List<DoubanParticipant> persons = pd.findAllById(personIds);
@@ -99,18 +99,20 @@ public class MovieServiceImpl implements MovieService{
             List<String> needPersonIds = moviePersonMap.get(m.getId());
             List<DoubanParticipant> directors = m.getDirectors();
             List<DoubanParticipant> casts = m.getCasts();
-            needPersonIds.forEach( (String id) -> {
-                DoubanParticipant person = personMap.get(id);
-                if (person != null) {
-                    DoubanImage personImage = personImageMap.get(id);
-                    person.setImage(personImage);
-                    if ("cast".equalsIgnoreCase(person.getType())) {
-                        casts.add(person);
-                    } else if ("director".equalsIgnoreCase(person.getType())) {
-                        directors.add(person);
+            if (needPersonIds != null) {
+                for (String id : needPersonIds) {
+                    DoubanParticipant person = personMap.get(id);
+                    if (person != null) {
+                        DoubanImage personImage = personImageMap.get(id);
+                        person.setImage(personImage);
+                        if ("cast".equalsIgnoreCase(person.getType())) {
+                            casts.add(person);
+                        } else if ("director".equalsIgnoreCase(person.getType())) {
+                            directors.add(person);
+                        }
                     }
                 }
-            });
+            }
 
             m.setImage(image);
             m.setCasts(casts);

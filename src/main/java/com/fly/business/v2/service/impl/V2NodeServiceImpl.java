@@ -39,8 +39,8 @@ public class V2NodeServiceImpl implements V2NodeService {
         List<V2Node> nodes = nd.findByPage(start, count);
         page.setCount(nodes.size());
         page.setPage(p);
-        long total = nd.count();
-        page.setTotal(total);
+        Long total = nd.count();
+        page.setTotal(Integer.valueOf(total.toString()));
         if (nodes.size() == 0) {
             return page;
         }

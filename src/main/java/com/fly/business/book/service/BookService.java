@@ -4,8 +4,6 @@ import com.fly.pojo.Book;
 import com.fly.pojo.BookShortComment;
 import com.fly.pojo.vo.Page;
 
-import java.util.List;
-
 /**
  * @author david
  * @date 20/08/18 19:08
@@ -15,7 +13,7 @@ public interface BookService {
 
     Book findSubject(String id, Integer p, Integer count);
 
-    List<BookShortComment> findCommentByPage(Integer p, Integer count, String bookId);
+    Page<BookShortComment> findCommentByPage(Integer p, Integer count, String bookId);
 
     Page<Book> findTop250(Integer p, Integer count);
 

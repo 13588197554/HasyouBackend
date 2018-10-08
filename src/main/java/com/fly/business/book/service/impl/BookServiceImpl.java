@@ -36,8 +36,8 @@ public class BookServiceImpl implements BookService {
         this.handleBookInfo(books);
 
         Page<Book> page = new Page<>();
-        long total = bd.count();
-        page.setTotal(total);
+        Long total = bd.count();
+        page.setTotal(Integer.valueOf(total.toString()));
         page.setPage(p);
         page.setCount(count);
         page.setBody(books);
@@ -54,25 +54,12 @@ public class BookServiceImpl implements BookService {
         this.handleBookInfo(book);
 
         // comment
-        Integer start = (p - 1) * count;
-        List<BookShortComment> comments = bscd.findByPage(id, start, count);
-        long total = bscd.countByBookId(id);
-        book.setComments(comments);
-        book.setCommentCount(total);
+//        Integer start = (p - 1) * count;
+//        List<BookShortComment> comments = bscd.findByPage(id, start, count);
+//        Integer total = bscd.countByBookId(id);
+//        book.setComments(comments);
+//        book.setCommentsCount(total);
         return book;
-    }
-
-    @Override
-    public List<BookShortComment> findCommentByPage(Integer p, Integer count, String bookId) {
-        Integer start = (p - 1) * count;
-        List<BookShortComment> comments = bscd.findByPage(bookId, start, count);
-//        Page<BookShortComment> page = new Page<>();
-//        page.setBody(comments);
-//        page.setPage(p);
-//        long total = bscd.countByBookId(bookId);
-//        page.setTotal(0l);
-//        page.setCount(count);
-        return comments;
     }
 
     @Override
@@ -85,9 +72,21 @@ public class BookServiceImpl implements BookService {
         this.handleBookInfo(books);
 
         page.setPage(p);
-        page.setTotal(250L);
+        page.setTotal(250);
         page.setCount(count);
         page.setBody(books);
+        return page;
+    }
+
+    @Override
+    public Page<BookShortComment> findCommentByPage(Integer p, Integer count, String bookId) {
+        Integer start = (p - 1) * count;
+        List<BookShortComment> comments = bscd.findByPage(bookId, start, count);
+        Page<BookShortComment> page = new Page<>();
+        page.setBody(comments);
+        page.setPage(p);
+        Integer total = bscd.countByBookId(bookId);
+        page.setTotal(total);
         return page;
     }
 
@@ -100,7 +99,7 @@ public class BookServiceImpl implements BookService {
 
         this.handleBookInfo(books);
         Page<Book> page = new Page<>();
-        page.setTotal(0l);
+        page.setTotal(0);
         page.setCount(count);
         page.setPage(p);
         page.setBody(books);

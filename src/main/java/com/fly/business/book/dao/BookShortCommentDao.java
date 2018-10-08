@@ -15,13 +15,13 @@ public interface BookShortCommentDao extends JpaRepository<BookShortComment, Str
 
     @Query(nativeQuery = true,
             value = "SELECT * FROM douban_book_short_comment WHERE book_id = :book_id " +
-                    "ORDER BY helpful_count DESC LIMIT :start, :count")
+                    "ORDER BY votes DESC LIMIT :start, :count")
     List<BookShortComment> findByPage(@Param("book_id") String bookId,
                                       @Param("start") Integer start,
                                       @Param("count") Integer count);
 
     @Query(nativeQuery = true,
             value = "SELECT COUNT(1) FROM douban_book_short_comment WHERE book_id = :book_id " +
-                    "ORDER BY helpful_count DESC")
-    long countByBookId(@Param("book_id") String bookId);
+                    "ORDER BY votes DESC")
+    Integer countByBookId(@Param("book_id") String bookId);
 }

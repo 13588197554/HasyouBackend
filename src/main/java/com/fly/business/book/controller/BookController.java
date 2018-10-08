@@ -4,20 +4,16 @@ import com.fly.business.book.dao.BookDao;
 import com.fly.business.book.service.BookService;
 import com.fly.common.controller.BaseController;
 import com.fly.pojo.Book;
-import com.fly.pojo.BookShortComment;
 import com.fly.pojo.vo.Page;
 import com.fly.pojo.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author david
  * @date 01/08/18 13:54
  */
-@Controller
+@RestController
 @RequestMapping("/book")
 public class BookController extends BaseController {
 
@@ -27,7 +23,6 @@ public class BookController extends BaseController {
     private BookService bs;
 
     @GetMapping("/size")
-    @ResponseBody
     public Result getSize(Result result) {
         long l = bd.count();
         result.ok(l);
@@ -35,7 +30,6 @@ public class BookController extends BaseController {
     }
 
     @GetMapping("/subjects")
-    @ResponseBody
     public Result findByPage(Result result,
                              @RequestParam(value = "p", defaultValue = "1") Integer p,
                              @RequestParam(value = "count", defaultValue = "20", required = false) Integer count) {
@@ -54,7 +48,6 @@ public class BookController extends BaseController {
      * @return
      */
     @GetMapping("/subjects/{tag_id}")
-    @ResponseBody
     public Result findByPageAndType(Result result,
                                     @PathVariable("tag_id") String tagId,
                                     @RequestParam(value = "p", defaultValue = "1") Integer p,
@@ -88,7 +81,6 @@ public class BookController extends BaseController {
      * @return
      */
     @GetMapping("/subject/{book_id}")
-    @ResponseBody
     public Result findSubject(Result result, @PathVariable String book_id,
                               @RequestParam(value = "p", defaultValue = "1", required = false) Integer p,
                               @RequestParam(value = "count", defaultValue = "20", required = false) Integer count) {
@@ -102,14 +94,19 @@ public class BookController extends BaseController {
     }
 
     @GetMapping("/comment/{book_id}")
-    @ResponseBody
     public Result findMoreComment(Result result,
                                   @PathVariable("book_id") String bookId,
                                   @RequestParam(value = "p", defaultValue = "1") Integer p,
                                   @RequestParam(value = "count", defaultValue = "20", required = false) Integer count) {
         p = this.validateIntNNWithDefaultValue(p, 1);
-        List<BookShortComment> comments = bs.findCommentByPage(p, count, bookId);
-        result.ok(comments);
+        Page page = bs.findCommentByPage(p, count, bookId);
+        result.ok(page);
+        return result;
+    }
+
+    @GetMapping("/review/{book_id}")
+    public Result findReviewByBookId(Result result) {
+//        bd.findReviewsByBookId();
         return result;
     }
 

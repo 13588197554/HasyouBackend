@@ -21,14 +21,14 @@ public class RedisController {
     @Autowired
     private RedisUtil redis;
 
-    @GetMapping("/set/lrange")
+    @GetMapping("/lrange")
     public Result lrange(Result result, @RequestParam("q") String key) {
         List<String> proxys = redis.lrange(key, 0, -1);
         result.ok(proxys);
         return result;
     }
 
-    @GetMapping("/hash/{key}")
+    @GetMapping("/hgetall/{key}")
     public Result hgetAll(Result result, @PathVariable String key, @RequestParam("f") String field) {
         if (StringUtils.isNotBlank(field)) {
             String s = redis.hget(key, field);
@@ -40,7 +40,7 @@ public class RedisController {
         return result;
     }
 
-    @GetMapping("/string/{key}")
+    @GetMapping("/get/{key}")
     public Result get(Result result, @PathVariable String key) {
         String s = redis.get(key);
         result.ok(s);
@@ -60,6 +60,14 @@ public class RedisController {
         Set<String> keys = redis.keys("*");
         Result ok = result.ok(keys);
         return result;
+    }
+
+    @PostMapping("/rpush/{key}")
+    public Result rpush(Result result,
+                        @PathVariable("key") String key,
+                        @RequestParam("values") String[] value) {
+        Long rpush = redis.rpush(key, value);
+        return result.ok(rpush);
     }
 
 }

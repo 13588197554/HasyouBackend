@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author david
@@ -91,11 +94,11 @@ public class ShortBookServiceImpl implements ShortBookService {
                 break;
         }
         Page<ShortBook> page = new Page<>();
-        long l = sbd.count();
+        Long l = sbd.count();
         page.setBody(books);
         page.setPage(p);
         page.setCount(count);
-        page.setTotal(l);
+        page.setTotal(Integer.valueOf(l.toString()));
         return page;
     }
 
